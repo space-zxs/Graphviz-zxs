@@ -18,6 +18,7 @@ class NetworkSimplex {
 	void check_cycles(graph_t * g);
 	node_t checkdfs(graph_t *g, node_t n);
 	void checktree(graph_t *g);
+	void checkminlen(graph_t *g);
 	int dump_node (graph_t *g, node_t n);
 	void check_cutvalues();
 	int check_ranks();
@@ -50,15 +51,15 @@ class NetworkSimplex {
 	int Low, Lim, Slack;
 
 	// property_maps
-	mark_map_t mark_map;
-	priority_map_t priority_map;
-	rank_map_t rank_map;
+	mark_map_t mark_map;  //作为节点标记
+	priority_map_t priority_map; //给节点分配优先级
+	rank_map_t rank_map; // 存储节点层次
 	//order_map_t order_map;
-	orig_in_map_t orig_in_map;
+	orig_in_map_t orig_in_map; // 原始节点入边  
 	orig_out_map_t orig_out_map;
-    in_map_t in_map;
-    out_map_t out_map;
-	tree_in_map_t tree_in_map;
+    in_map_t in_map; 
+    out_map_t out_map; 
+	tree_in_map_t tree_in_map; // 紧树的 出入边
 	tree_out_map_t tree_out_map;
 	low_map_t low_map;
 	lim_map_t lim_map;
@@ -67,7 +68,7 @@ class NetworkSimplex {
 	onstack_map_t onstack_map;
 
 	cutvalue_map_t cutvalue_map;
-	tree_index_map_t tree_index_map;
+	tree_index_map_t tree_index_map;  // 紧树边 index 
 	minlen_map_t minlen_map;
 	weight_map_t weight_map;
 	//*/

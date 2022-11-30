@@ -2,10 +2,11 @@
 #define TYPES_H
 
 
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/depth_first_search.hpp>
+
 #include <boost/property_map/property_map.hpp>
+#include <boost/graph/depth_first_search.hpp>
 #include <boost/graph/incremental_components.hpp>
+#include <boost/graph/adjacency_list.hpp> // 邻接链表traits  /* The main reason for this class is that sometimes one would like to create graph properties whose values are vertex or edge descriptors. If you try to use graph_traits for this you will run into a problem with mutually recursive types. To get around this problem, the adjacency_list_traits class is provided, which gives the user access to the vertex and edge descriptor types without requiring the user to provide the property types for the graph.*/
 //#include <boost/graph/subgraph.hpp>
 #include "subgraph.hpp"
 
@@ -19,17 +20,20 @@ namespace boost
   BOOST_INSTALL_PROPERTY(graph, IDproperty);
 }
 
-struct Agnodeinfo_t;
+//node、 edge、 graph 的结构体
+struct Agnodeinfo_t; 
 struct Agedgeinfo_t;
 struct Agraphinfo_t;
 
+//rename vertex、 edge 、 graph 的属性图  内部属性  bundled property   
 typedef boost::property<boost::vertex_index_t, std::size_t, Agnodeinfo_t> vertex_prop;
 typedef boost::property<boost::edge_index_t, std::size_t, Agedgeinfo_t> edge_prop;
 typedef boost::property<graph_IDproperty_t, Agraphinfo_t> graph_prop;
 // listS as vertex container while being used with subgraph causes a lot of pains!
-typedef boost::subgraph<boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS, vertex_prop, edge_prop, graph_prop> > graph_t;
+typedef boost::subgraph<boost::adjacency_list<boost::listS, boost::vecS, boost::bidirectionalS, vertex_prop, edge_prop, graph_prop> > graph_t;//子图和六个参数的邻接链表
 
-//typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS, Agnodeinfo_t, Agedgeinfo_t> graph_t;//bgl
+//typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS, Agnodeinfo_t, Agedgeinfo_t> graph_t;//bgl  定义五个参数的领接链表的图结构
+
 typedef boost::graph_traits<graph_t>::vertex_iterator node_it;//bgl
 typedef boost::graph_traits<graph_t>::vertex_descriptor node_t;//bgl
 typedef boost::graph_traits <graph_t>::vertices_size_type Size;//bgl
@@ -51,7 +55,7 @@ typedef struct Agnodeinfo_t {
 	Agrec_t hdr;
 	shape_desc *shape;
 	void *shape_info;//*/
-	pointf coord;
+	pointf coord;  //坐标
 	//double width, height;  /* inches */
 	/*/
 	boxf bb;
@@ -84,7 +88,7 @@ typedef struct Agnodeinfo_t {
 	std::vector<edge_t> orig_in, orig_out, in, out, flat_out, flat_in, other;//bgl
 	//graph_t *clust;
 
-	/* for union-find and collapsing nodes */
+	/* for union-find and collapsing nodes */  //union-find - 并查集
 	int UF_size;
 	node_t *UF_parent;//bgl
 	node_t *inleaf, *outleaf;//bgl
@@ -227,7 +231,7 @@ typedef struct Agraphinfo_t {
 
 } Agraphinfo_t;
 
-
+// property_map 提供访问图属性的通用方法 有访问内部属性和外部属性两大类
 typedef boost::property_map<graph_t, int Agnodeinfo_t::*>::type rank_map_t;
 typedef boost::property_map<graph_t, int Agnodeinfo_t::*>::type order_map_t;
 typedef boost::property_map<graph_t, bool Agnodeinfo_t::*>::type mark_map_t;

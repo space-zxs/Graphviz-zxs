@@ -17,9 +17,9 @@ void decomp::decompose(graph_t *g, std::vector<int> &components) {
 	copy_graph(*g, copied_g, boost::vertex_copy(do_nothing()).edge_copy(do_nothing()));
 
     //std::vector<int> components(boost::num_vertices(copied_g));
-    int num = boost::connected_components(copied_g, &components[0]);
+    int num = boost::connected_components(copied_g, &components[0]); // 通过把有向图拷贝成无向图，利用dfs算法，得到连通子图,加到components数组里面
 	std::cout<<num<<std::endl;
-	std::vector<graph_t*> g_comp = std::vector<graph_t*>(num);
+	std::vector<graph_t*> g_comp = std::vector<graph_t*>(num); 
 
 	node_it n, n_end;
 	int i = 0; 

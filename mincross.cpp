@@ -143,11 +143,11 @@ void Mincross::init_mincross(graph_t * g)
 
     TE_list = new edge_t[size];
     TI_list = new int[size];
-    mincross_options(g);
+    mincross_options(g);  // 初始化几个可选参数
     // no need to do fillRanks(g);
     //*/
     Class2 cl(g, propmap);
-    cl.class2(g);
+    cl.class2(g);  // 建虚拟顶点虚拟边
     //decomp::decompose(g);//*/
 
     allocate_ranks(g);
@@ -518,8 +518,8 @@ void Mincross::build_ranks(graph_t * g, int pass) {
                 node_t n0 = q.front();
                 q.pop();
                 // ranktype of n0 is not CLUSTER in our case
-	            install_in_rank(g, n0);
-	            enqueue_neighbors(g, q, n0, pass);
+	            install_in_rank(g, n0); // 每个rank 的节点分配初始order 
+	            enqueue_neighbors(g, q, n0, pass); //出队列的节点的头尾节点如果存在入队列
             }
         }
     }

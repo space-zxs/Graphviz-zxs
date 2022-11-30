@@ -54,7 +54,7 @@ NetworkSimplex::NetworkSimplex(graph_t *g, PropertyMap propmap) : G(g), propmap(
         std::vector<edge_t> orig_in_n_loc;
         for (std::vector<edge_t>::iterator it = orig_in_n.begin(); it != orig_in_n.end(); ++it)
             orig_in_n_loc.push_back(G->global_to_local(*it));
-        boost::put(orig_in_map, *n, orig_in_n_loc);
+        boost::put(orig_in_map, *n, orig_in_n_loc); // p 、 k 、  v  ,  更新原始节点本地入边
 
         std::vector<edge_t> &orig_out_n = boost::get(*(propmap.orig_out_map), G->local_to_global(*n));
         std::vector<edge_t> orig_out_n_loc;
@@ -66,7 +66,7 @@ NetworkSimplex::NetworkSimplex(graph_t *g, PropertyMap propmap) : G(g), propmap(
         std::vector<edge_t> in_n_loc;
         for (std::vector<edge_t>::iterator it = in_n.begin(); it != in_n.end(); ++it)
             in_n_loc.push_back(G->global_to_local(*it));
-        boost::put(in_map, *n, in_n_loc);
+        boost::put(in_map, *n, in_n_loc);  // im_map ?  在这是否已经有数据
 
         std::vector<edge_t> &out_n = boost::get(*(propmap.out_map), G->local_to_global(*n));
         std::vector<edge_t> out_n_loc;
@@ -102,7 +102,10 @@ NetworkSimplex::NetworkSimplex(graph_t *g, PropertyMap propmap) : G(g), propmap(
 
     Verbose = true;
 //*/
-    if (Verbose) checktree(g);
+    if (Verbose) {
+        checktree(g);
+        //checkminlen(g);
+    }
 }
 
 NetworkSimplex::~NetworkSimplex() {
@@ -191,7 +194,7 @@ void NetworkSimplex::init_rank() {
     ctr = 0;
 
     for (boost::tie(v, vi_end) = boost::vertices(*G); v != vi_end; ++v) {
-	if (boost::get(priority_map, *v) == 0)
+	if (boost::get(priority_map, *v) == 0) // 为 0 很可能是 源节点 
 	    Q.push(*v);
     }
 
@@ -213,7 +216,7 @@ void NetworkSimplex::init_rank() {
 	    int pri_tmp = boost::get(priority_map, target);
 	    --pri_tmp;
 	    boost::put(priority_map, target, pri_tmp);
-	    if (pri_tmp <= 0)
+	    if (pri_tmp <= 0) //寻找比souce 优先级小1的target
 		Q.push(target);
 	}
     }
@@ -299,7 +302,7 @@ void NetworkSimplex::dfs_enter_outedge(node_t v) {
             dfs_enter_outedge(tail);
 
     }
-
+    
 }
 //*/
 bool NetworkSimplex::seq(int a, int b, int c) {
@@ -371,7 +374,7 @@ bool NetworkSimplex::treesearch(node_t v) {
     std::vector<edge_t> out_v = boost::get(out_map, v);
     for (std::vector<edge_t>::iterator eo = out_v.begin(); eo != out_v.end(); ++eo) {
         //for (boost::tie(eo, eo_end) = boost::out_edges(v, *G); eo != eo_end; ++eo) {
-        if (!boost::get(mark_map, boost::target(*eo, *G)) && (slack(*eo) == 0)) {std::cout<<v<<" -> "<<boost::target(*eo, *G)<<std::endl;
+        if (!boost::get(mark_map, boost::target(*eo, *G)) && (slack(*eo) == 0)) {std::cout<<"slack edge:"<<v<<" -> "<<boost::target(*eo, *G)<<std::endl;
             add_tree_edge(*eo); 
             if ((Tree_edge.size() == N_nodes - 1) || treesearch(boost::target(*eo, *G))) 
                 return true;	    
@@ -391,7 +394,7 @@ bool NetworkSimplex::treesearch(node_t v) {
 }
 
 int NetworkSimplex::length(edge_t e) {
-    return boost::get(rank_map, boost::target(e, *G)) - boost::get(rank_map, boost::source(e, *G));
+    return boost::get(rank_map, boost::target(e, *G)) - boost::get(rank_map, boost::source(e, *G)); //通过rank 计算 边长
 }
 int NetworkSimplex::slack(edge_t e) {
     return length(e) - boost::get(minlen_map, e);
@@ -455,7 +458,7 @@ int NetworkSimplex::feasible_tree() {
     if (e != edge_t()) {
         delta = slack(e);
         if (delta) {
-	    if (incident(e) == boost::target(e, *G))
+	    if (incident(e) == boost::target(e, *G)) // 往里指
 	        delta = -delta;
         for (i = 0; i < Tree_node.size(); i++)
             boost::put(rank_map, Tree_node[i], boost::get(rank_map, Tree_node[i]) + delta);
@@ -708,7 +711,7 @@ int NetworkSimplex::init_graph(graph_t *g) {
             boost::put(cutvalue_map, *ei, 0);
             boost::put(tree_index_map, *ei, -1);
             if (feasible && (boost::get(rank_map, boost::target(*ei, *g)) - boost::get(rank_map, boost::source(*ei, *g)) < boost::get(minlen_map, *ei)))
-                feasible = false;
+                feasible = false; // 0 - 0  < 1
         }
 
         boost::put(tree_in_map, *n, std::vector<edge_t>());
@@ -764,7 +767,7 @@ int NetworkSimplex::rank2(graph_t *g, int balance, int maxiter, int search_size)
 	std::cerr<<boost::num_vertices(*g)<<" vertices and "<<boost::num_edges(*g)<<" edges and maxiter="<<maxiter<<" and balance="<<balance<<std::endl;
 	start_timer();
     }//*/
-    feasible = init_graph(g);std::cout<<feasible<<std::endl;
+    feasible = init_graph(g);std::cout<<"feasible:"<<feasible<<std::endl;
     if (!feasible)
 	init_rank();
     if (maxiter <= 0) {
@@ -777,7 +780,7 @@ int NetworkSimplex::rank2(graph_t *g, int balance, int maxiter, int search_size)
     else
 	Search_size = SEARCHSIZE;
 
-    if (setjmp (jbuf)) {
+    if (setjmp (jbuf)) { // 直接调用 setjmp 返回值为0  
 	return 2;
     }
 
@@ -826,7 +829,7 @@ int NetworkSimplex::rank2(graph_t *g, int balance, int maxiter, int search_size)
 
     return 0;
 }
-
+//maxiter 最大迭代次数
 int NetworkSimplex::rank(graph_t *g, int balance, int maxiter) {
     char *s;
     int search_size;
@@ -985,7 +988,7 @@ void NetworkSimplex::check_cutvalues()
         save = boost::get(cutvalue_map, *it);
         x_cutval(*it);
         if (save != boost::get(cutvalue_map, *it))
-        abort();std::cout<<"cutvalue:"<<save<<std::endl;
+        abort();std::cout<<"cutval441ue:"<<save<<std::endl;
         }
     }
 }
@@ -1005,7 +1008,7 @@ int NetworkSimplex::check_ranks()
             abort();
         }
     }
-    fprintf(stderr, "rank cost %d\n", cost);
+    fprintf(stderr, "rank cost %d\n", cost); // cost 的作用  
 
     std::cout<<"rank list:"<<std::endl;
     for (boost::tie(n, n_end) = boost::vertices(*G); n != n_end; ++n) {
@@ -1014,6 +1017,19 @@ int NetworkSimplex::check_ranks()
 
     return cost;
 }
+
+/*void NetworkSimplex::checkminlen(graph_t *g){
+    node_it v, v_end;
+
+    for (boost::tie(v, v_end) = boost::vertices(*g); v != v_end; ++v) {
+        std::vector<edge_t> tree_out_v = boost::get(orig_out_map, *v);	
+        for (std::vector<edge_t>::iterator it = tree_out_v.begin(); it != tree_out_v.end(); ++it) {
+            std::cout<<std::endl<<"edge "<<(*v)<<" -> ";
+            std::cout<<boost::target(*it, *g)<<" : "<<boost::get(minlen_map, *it)<<std::endl;
+        }
+    }
+}
+*/
 
 void NetworkSimplex::checktree(graph_t *g)
 {

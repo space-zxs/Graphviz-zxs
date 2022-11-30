@@ -1,0 +1,67 @@
+/*
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(gdb) Windows 上的 Bash 启动",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}/build/clonedGraphviz.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "pipeTransport": {
+                "debuggerPath": "D:/MinGw/bin/gdb",
+                "pipeProgram": "${env:windir}\\system32\\bash.exe",
+                "pipeArgs": ["-c"],
+                "pipeCwd": ""
+            },
+            "setupCommands": [
+                {
+                    "description": "为 gdb 启用整齐打印",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description":  "将反汇编风格设置为 Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "C/C++: g++.exe 生成活动文件"
+        }
+
+    ]
+}*/
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "g++ - 生成和调试活动文件", // 配置名称，显示在启动配置下拉菜单中
+        "type": "cppdbg", //配置类型
+        "request": "launch", //请求配置类型
+        "program": "${workspaceFolder}/build/clonedGraphviz.exe", //代表的可执行文件的绝对路径
+        "args": [], //传递给程序的命令行参数
+        "stopAtEntry": false, //可选参数。如果为true，则调试程序应在目标的入口点处停止。如果床底了processId，则不起任何作用
+        "cwd": "${workspaceFolder}", //cd到工程的顶层目录
+        "environment": [], //要添加到程序中的环境变量{"name":"config","value":"Debug"}
+        "externalConsole": false, //true:启动控制台;false:在vscode的集成的控制台显示
+        "MIMode": "gdb", //调试方式
+        //
+        "setupCommands": [
+          {
+            "description": "为 gdb 启用整齐打印", //
+            "text": "-enable-pretty-printing", //
+            "ignoreFailures": true //
+          }
+        ],
+        "preLaunchTask": "C/C++: g++.exe 生成活动文件", //调试前作的一个task,联合tasks.json进行自动化编译后调试
+        "miDebuggerPath": "D:\\MinGw\\bin\\gdb.exe" //调试程序的路径，要知道自己把调试程序安装到哪里了
+      }
+    ]
+  }

@@ -22,7 +22,7 @@ class dotinit {
     xpenalty_map_t xpenalty_map;
     edge_type_map_t edge_type_map;
 
-    PropertyMap propmap;
+    PropertyMap propmap;  // 传播图,指针，传递地址
 
 public:
     void dot_init_node(graph_t *g);

@@ -1,5 +1,5 @@
 #include "rank.h"
-#include "ns.h"
+#include "ns.h" //网络单纯形
 #include "fastgr.h"
 #include "decomp.h"
 #include "class1.h"
@@ -10,10 +10,10 @@
 void Rank::dot_rank(graph_t *g) {
 
     Class1 cl(g, propmap);
-    cl.class1(g);
+    cl.class1(g);// 原始的出入边、 顶点、  出入边、 虚拟的出入边 构建完成
 	//acyclic(g);
-	decomp::decompose(g, propmap.components);
-	rank1(g);
+	decomp::decompose(g, propmap.components);  //分解连通图
+	rank1(g); 
     expand_ranksets(g);
     cleanup1(g);
 }
@@ -25,7 +25,7 @@ void Rank::rank1(graph_t *g) {
 
 	graph_t::children_iterator gi, gi_end;
     for (boost::tie(gi, gi_end) = g->children(); gi != gi_end; ++gi) {
-        NetworkSimplex ns(&(*gi), propmap);
+        NetworkSimplex ns(&(*gi), propmap); 
 		//ns.dump_graph(&(*(gi))); 
 		ns.rank(&(*gi), 1, 10);	
 

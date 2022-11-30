@@ -1,0 +1,52 @@
+[
+{
+  "directory": "D:/clonegraphviz/build",
+  "command": "D:\\MinGw\\bin\\g++.exe -DDEBUG1 @CMakeFiles/clonedGraphviz.dir/includes_CXX.rsp -g -o CMakeFiles\\clonedGraphviz.dir\\main.cpp.obj -c D:\\clonegraphviz\\main.cpp",
+  "file": "D:/clonegraphviz/main.cpp"
+},
+{
+  "directory": "D:/clonegraphviz/build",
+  "command": "D:\\MinGw\\bin\\g++.exe -DDEBUG1 @CMakeFiles/clonedGraphviz.dir/includes_CXX.rsp -g -o CMakeFiles\\clonedGraphviz.dir\\dotinit.cpp.obj -c D:\\clonegraphviz\\dotinit.cpp",
+  "file": "D:/clonegraphviz/dotinit.cpp"
+},
+{
+  "directory": "D:/clonegraphviz/build",
+  "command": "D:\\MinGw\\bin\\g++.exe -DDEBUG1 @CMakeFiles/clonedGraphviz.dir/includes_CXX.rsp -g -o CMakeFiles\\clonedGraphviz.dir\\rank.cpp.obj -c D:\\clonegraphviz\\rank.cpp",
+  "file": "D:/clonegraphviz/rank.cpp"
+},
+{
+  "directory": "D:/clonegraphviz/build",
+  "command": "D:\\MinGw\\bin\\g++.exe -DDEBUG1 @CMakeFiles/clonedGraphviz.dir/includes_CXX.rsp -g -o CMakeFiles\\clonedGraphviz.dir\\ns.cpp.obj -c D:\\clonegraphviz\\ns.cpp",
+  "file": "D:/clonegraphviz/ns.cpp"
+},
+{
+  "directory": "D:/clonegraphviz/build",
+  "command": "D:\\MinGw\\bin\\g++.exe -DDEBUG1 @CMakeFiles/clonedGraphviz.dir/includes_CXX.rsp -g -o CMakeFiles\\clonedGraphviz.dir\\mincross.cpp.obj -c D:\\clonegraphviz\\mincross.cpp",
+  "file": "D:/clonegraphviz/mincross.cpp"
+},
+{
+  "directory": "D:/clonegraphviz/build",
+  "command": "D:\\MinGw\\bin\\gcc.exe -DDEBUG1 @CMakeFiles/clonedGraphviz.dir/includes_C.rsp -g -o CMakeFiles\\clonedGraphviz.dir\\timing.c.obj -c D:\\clonegraphviz\\timing.c",
+  "file": "D:/clonegraphviz/timing.c"
+},
+{
+  "directory": "D:/clonegraphviz/build",
+  "command": "D:\\MinGw\\bin\\g++.exe -DDEBUG1 @CMakeFiles/clonedGraphviz.dir/includes_CXX.rsp -g -o CMakeFiles\\clonedGraphviz.dir\\class1.cpp.obj -c D:\\clonegraphviz\\class1.cpp",
+  "file": "D:/clonegraphviz/class1.cpp"
+},
+{
+  "directory": "D:/clonegraphviz/build",
+  "command": "D:\\MinGw\\bin\\g++.exe -DDEBUG1 @CMakeFiles/clonedGraphviz.dir/includes_CXX.rsp -g -o CMakeFiles\\clonedGraphviz.dir\\class2.cpp.obj -c D:\\clonegraphviz\\class2.cpp",
+  "file": "D:/clonegraphviz/class2.cpp"
+},
+{
+  "directory": "D:/clonegraphviz/build",
+  "command": "D:\\MinGw\\bin\\g++.exe -DDEBUG1 @CMakeFiles/clonedGraphviz.dir/includes_CXX.rsp -g -o CMakeFiles\\clonedGraphviz.dir\\fastgr.cpp.obj -c D:\\clonegraphviz\\fastgr.cpp",
+  "file": "D:/clonegraphviz/fastgr.cpp"
+},
+{
+  "directory": "D:/clonegraphviz/build",
+  "command": "D:\\MinGw\\bin\\g++.exe -DDEBUG1 @CMakeFiles/clonedGraphviz.dir/includes_CXX.rsp -g -o CMakeFiles\\clonedGraphviz.dir\\decomp.cpp.obj -c D:\\clonegraphviz\\decomp.cpp",
+  "file": "D:/clonegraphviz/decomp.cpp"
+}
+]

@@ -28,7 +28,7 @@ edge_t fastgraph::ffe(node_t u, std::vector<edge_t> &ulist, node_t v, std::vecto
 
 edge_t fastgraph::virtual_edge(node_t u, node_t v, edge_t orig) {
     edge_t e = new_virtual_edge(u, v, orig);
-    boost::get(*out_map, u).push_back(e);
+    boost::get(*out_map, u).push_back(e); // 把orgin map  中所有边复制到 in/out_map中
     boost::get(*in_map, v).push_back(e);
     return e;
 }
@@ -44,8 +44,8 @@ edge_t fastgraph::new_virtual_edge(node_t u, node_t v, edge_t orig) {
     }
     boost::put(*edge_type_map, e, VIRTUAL);
 
-    if (orig != edge_t()) {
-        boost::put(*count_map, e, boost::get(*count_map, orig));
+    if (orig != edge_t()) {  // 将原始边的值给到虚拟边
+        boost::put(*count_map, e, boost::get(*count_map, orig));  
         boost::put(*xpenalty_map, e, boost::get(*xpenalty_map, orig));
 	    boost::put(*weight_map, e, boost::get(*weight_map, orig));
         boost::put(*minlen_map, e, boost::get(*minlen_map, orig));
@@ -82,7 +82,7 @@ void fastgraph::merge_oneway(edge_t e, edge_t rep) {
     }
     assert(boost::get(*to_virt_map, e) == edge_t());
 
-    boost::put(*to_virt_map, e, rep);
+    boost::put(*to_virt_map, e, rep); // e->rep
     basic_merge(e, rep);
 
 }

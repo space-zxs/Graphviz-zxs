@@ -17,9 +17,9 @@
 #include <vector>
 #include <map>
 #include <boost/assert.hpp>
-#include <boost/graph/graph_traits.hpp>
+#include <boost/graph/graph_traits.hpp> //Just like the iterators of STL, graphs have associated types
 #include <boost/graph/graph_mutability_traits.hpp>
-#include <boost/graph/properties.hpp>
+#include <boost/graph/properties.hpp> //  This is the traits class that produces the type for a property map object for a particular graph type. The property is specified by the PropertyTag template parameter. Graph classes must specialize this traits class to provide their own implementation for property maps.
 #include <boost/iterator/indirect_iterator.hpp>
 
 #include <boost/static_assert.hpp>
@@ -28,7 +28,7 @@
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/or.hpp>
 
-namespace boost {
+namespace boost { //自定义命名空间，避免本地化名称与外界冲突
 
 struct subgraph_tag { };
 
@@ -43,12 +43,12 @@ template <typename T>
 struct local_property
 {
     typedef T kind;
-    local_property(T x) : value(x) { }
+    local_property(T x) : value(x) { } //" : ", 用于分割，是类给成员变量赋值的方法
     T value;
 };
 
 template <typename T>
-inline local_property<T> local(T x)
+inline local_property<T> local(T x)  // inline 内联函数 解决一些频繁调用小涵书大量1ACE0510.png栈内存的问题 
 { return local_property<T>(x); }
 
 template <typename T>
@@ -64,8 +64,8 @@ inline global_property<T> global(T x)
 { return global_property<T>(x); }
 //@}
 
-// Invariants of an induced subgraph:
-//   - If vertex u is in subgraph g, then u must be in g.parent().
+// Invariants of an induced subgraph:  //导出子图的不变量  导出子图的定义
+//   - If vertex u is in subgraph g, then u must be in g.parent(). 
 //   - If edge e is in subgraph g, then e must be in g.parent().
 //   - If edge e=(u,v) is in the root graph, then edge e
 //     is also in any subgraph that contains both vertex u and v.
@@ -81,25 +81,25 @@ class subgraph {
     typedef graph_traits<Graph> Traits;
     typedef std::list<subgraph<Graph>*> ChildrenList;
 public:
-    // Graph requirements
+    // Graph requirements  提供图的基本的特点
     typedef typename Traits::vertex_descriptor         vertex_descriptor;
     typedef typename Traits::edge_descriptor           edge_descriptor;
     typedef typename Traits::directed_category         directed_category;
     typedef typename Traits::edge_parallel_category    edge_parallel_category;
     typedef typename Traits::traversal_category        traversal_category;
 
-    // IncidenceGraph requirements
+    // IncidenceGraph requirements 增加出边特性
     typedef typename Traits::out_edge_iterator         out_edge_iterator;
     typedef typename Traits::degree_size_type          degree_size_type;
 
-    // AdjacencyGraph requirements
+    // AdjacencyGraph requirements 顶点的邻接顶点
     typedef typename Traits::adjacency_iterator        adjacency_iterator;
 
-    // VertexListGraph requirements
+    // VertexListGraph requirements  增加了对图中所有顶点有效遍历的要求
     typedef typename Traits::vertex_iterator           vertex_iterator;
     typedef typename Traits::vertices_size_type        vertices_size_type;
 
-    // EdgeListGraph requirements
+    // EdgeListGraph requirements  增加了队图中所有边的有效访问的要求
     typedef typename Traits::edge_iterator             edge_iterator;
     typedef typename Traits::edges_size_type           edges_size_type;
 
@@ -111,7 +111,7 @@ public:
     typedef Graph                                      graph_type;
     typedef typename graph_property_type<Graph>::type  graph_property_type;
 
-    // Create the main graph, the root of the subgraph tree
+    // Create the main graph, the root of the subgraph tree 创建主图，即子图的根
     subgraph()
         : m_parent(0), m_edge_counter(0)
     { }
@@ -173,7 +173,7 @@ public:
     // Create a subgraph
     subgraph<Graph>& create_subgraph() {
         m_children.push_back(new subgraph<Graph>());
-        m_children.back()->m_parent = this;
+        m_children.back()->m_parent = this; //指向函数的调用者
         return *m_children.back();
     }
 
@@ -309,7 +309,7 @@ public:
 #endif // BOOST_GRAPH_NO_BUNDLED_PROPERTIES
 
     //  private:
-    typedef typename property_map<Graph, edge_index_t>::type EdgeIndexMap;
+    typedef typename property_map<Graph, edge_index_t>::type EdgeIndexMap;  //EdgeIndexMap 是实际的属性图对象,传入k -> v，如传入顶点v的可以得到具体的值
     typedef typename property_traits<EdgeIndexMap>::value_type edge_index_type;
     BOOST_STATIC_ASSERT((!is_same<edge_index_type,
                         boost::detail::error_property_not_found>::value));
@@ -327,8 +327,8 @@ private:
 public: // Probably shouldn't be public....
     Graph m_graph;
     subgraph<Graph>* m_parent;
-    edge_index_type m_edge_counter; // for generating unique edge indices
-    ChildrenList m_children;
+    edge_index_type m_edge_counter; // for generating unique edge indices  用于生成唯一的边索引
+    ChildrenList m_children;// list of graph pointer
     GlobalVertexList m_global_vertex; // local -> global
     LocalVertexMap m_local_vertex;  // global -> local
     GlobalEdgeList m_global_edge;              // local -> global

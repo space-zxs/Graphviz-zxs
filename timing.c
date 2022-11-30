@@ -14,8 +14,9 @@
 #ifndef WIN32
 
 #include        <unistd.h>
-#include	<sys/types.h>
-#include	<sys/times.h>
+#include	<sys/types.h> //sys/types.h，在应用程序源文件中包含 <sys/types.h> 以访问 _LP64 和 _ILP32 的定义。所有这些类型在 ILP32 编译环境中保持为 32 位值，并会在 LP64 编译环境中增长为 64 位值。
+//#include	<sys/times.h> //修改
+#include	<sys/time.h>
 #include	<sys/param.h>
 
 
@@ -29,16 +30,15 @@ typedef struct tms mytime_t;
 
 #else
 
-#include	<time.h>
-#include "render.h"
-#include    "utils.h"
+#include    <time.h>
+//#include    "render.h"
+//#include    "utils.h"
 
 typedef clock_t mytime_t;
 #define GET_TIME(S) S = clock()
 #define DIFF_IN_SECS(S,T) ((S - T) / (double)CLOCKS_PER_SEC)
 
 #endif
-
 
 static mytime_t T;
 

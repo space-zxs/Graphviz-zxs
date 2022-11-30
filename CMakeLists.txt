@@ -1,8 +1,9 @@
-project(clonedGraphviz)
-cmake_minimum_required(VERSION 2.8)
+project(clonedGraphviz)   #设置项目名称
+cmake_minimum_required(VERSION 3.0)  # cmake 版本
 set(Boost_USE_STATIC_LIBS        ON) # only find static libs
 #set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME    OFF)
+set(BOOST_ROOT D:/boost_1_80_0)
 find_package(Boost)
 if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})

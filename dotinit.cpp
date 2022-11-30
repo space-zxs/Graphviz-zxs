@@ -6,8 +6,10 @@
 void dotinit::dot_init_node(graph_t *g) {
     node_it n, vi_end;
     for (boost::tie(n, vi_end) = boost::vertices(*g); n != vi_end; ++n) {
-        boost::put(&Agnodeinfo_t::rank, *g, *n, 0);
-        boost::put(&Agnodeinfo_t::order, *g, *n, 0);
+
+        //下面标识的是每个节点的初始化
+        boost::put(&Agnodeinfo_t::rank, *g, *n, 0);  //rank = 0
+        boost::put(&Agnodeinfo_t::order, *g, *n, 0); // order = 0
         boost::put(&Agnodeinfo_t::orig_in, *g, *n, std::vector<edge_t>());
         boost::put(&Agnodeinfo_t::orig_out, *g, *n, std::vector<edge_t>());
         boost::put(&Agnodeinfo_t::in, *g, *n, std::vector<edge_t>());
@@ -16,7 +18,7 @@ void dotinit::dot_init_node(graph_t *g) {
 
     }
 
-    rank_map = boost::get(&Agnodeinfo_t::rank, *g);
+    rank_map = boost::get(&Agnodeinfo_t::rank, *g);  //get 整个rank属性的
     order_map = boost::get(&Agnodeinfo_t::order, *g);
     orig_in_map = boost::get(&Agnodeinfo_t::orig_in, *g);
     orig_out_map = boost::get(&Agnodeinfo_t::orig_out, *g);
@@ -26,7 +28,7 @@ void dotinit::dot_init_node(graph_t *g) {
     to_virt_map = boost::get(&Agedgeinfo_t::to_virt, *g);
     to_orig_map = boost::get(&Agedgeinfo_t::to_orig, *g);
 
-
+    //一个传播图的指针 propmap.h 中定义的,多了一个 components 
     propmap.rank_map = &rank_map;
     propmap.order_map = &order_map;    
     propmap.orig_in_map = &orig_in_map;
@@ -74,10 +76,10 @@ void dotinit::dot_init_node_edge(graph_t * g) {
 
 void dotinit::dot_layout(graph_t * g) {
     dot_init_node_edge(g);
-    propmap.components = std::vector<int>(boost::num_vertices(*g));
-    Rank r(propmap);
+    propmap.components = std::vector<int>(boost::num_vertices(*g)); //给components赋值
+    Rank r(propmap);//调用rank 
     r.dot_rank(g);
-    Mincross mc(g, propmap);
+    Mincross mc(g, propmap); //调用交叉最小化
     mc.dot_mincross(g, 0);
     //set_temp_orders(g);
 
